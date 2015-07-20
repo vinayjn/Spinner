@@ -145,4 +145,21 @@ class Spinner: UIView {
                 self.animateOuterRing()
         }
     }
+
+    func startAnimating(){
+        
+        self.animateOuterRing()
+        self.animateInnerRing()
+    }
+    
+    func stopAnimating(){
+        
+        if hidesWhenStopped{
+            self.hidden = true
+            self.layer.removeAllAnimations()
+            return
+        }
+        self.layer.removeAllAnimations()
+    }
+
 }
