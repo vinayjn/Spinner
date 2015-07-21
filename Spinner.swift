@@ -7,19 +7,21 @@
 //
 
 import UIKit
-enum SpinnerStyle : Int{
-    case None = 0
-    case Light = 1
-    case Dark = 2
-}
+
 
 @IBDesignable
 
 class Spinner: UIView {
     
+    enum SpinnerStyle : Int{
+        case None = 0
+        case Light = 1
+        case Dark = 2
+    }
+    
     var Style : SpinnerStyle = .None
     
-    @IBInspectable var hidesWhenStopped : Bool = true
+    @IBInspectable var hidesWhenStopped : Bool = false
     
     @IBInspectable var outerFillColor : UIColor = UIColor.clearColor()
     @IBInspectable var outerStrokeColor : UIColor = UIColor.grayColor()
@@ -126,40 +128,42 @@ class Spinner: UIView {
         label.textAlignment = .Center
         label.center = self.convertPoint(self.center, fromCoordinateSpace: self.superview!)
         
+        self.startAnimating()
     }
     
     func animateInnerRing(){
         
-        UIView.animateWithDuration(0.2, delay: 0.0, options: .CurveLinear | .OverrideInheritedDuration, animations: { () -> Void in
-            self.currentInnerRotation += CGFloat(M_PI_4)
-            self.innerView.transform = CGAffineTransformMakeRotation(-self.currentInnerRotation);
-            }) { (Bool finished) -> Void in
-                self.animateInnerRing()
-        }
+        var rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
+        rotationAnimation.fromValue = 0 * CGFloat(M_PI/180)
+        rotationAnimation.toValue = 360 * CGFloat(M_PI/180)
+        rotationAnimation.duration = 1.0
+        rotationAnimation.repeatCount = HUGE
+        self.innerView.layer.addAnimation(rotationAnimation, forKey: "rotateInner")
     }
     func animateOuterRing(){
-        UIView.animateWithDuration(0.3, delay: 0.0, options: .CurveLinear | .OverrideInheritedDuration, animations: { () -> Void in
-            self.currentOuterRotation += CGFloat(M_PI_4)
-            self.outerView.transform = CGAffineTransformMakeRotation(self.currentOuterRotation);
-            }) { (Bool finished) -> Void in
-                self.animateOuterRing()
-        }
+        
+        var rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
+        rotationAnimation.fromValue = 360 * CGFloat(M_PI/180)
+        rotationAnimation.toValue = 0 * CGFloat(M_PI/180)
+        rotationAnimation.duration = 0.8
+        rotationAnimation.repeatCount = HUGE
+        self.outerView.layer.addAnimation(rotationAnimation, forKey: "rotateOuter")
     }
-
+    
     func startAnimating(){
+        
+        self.hidden = false
         
         self.animateOuterRing()
         self.animateInnerRing()
     }
     
     func stopAnimating(){
-        
         if hidesWhenStopped{
             self.hidden = true
-            self.layer.removeAllAnimations()
-            return
         }
-        self.layer.removeAllAnimations()
+        self.outerView.layer.removeAllAnimations()
+        self.innerView.layer.removeAllAnimations()
+        
     }
-
 }
