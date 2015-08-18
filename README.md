@@ -23,7 +23,9 @@ Similar to `UIActivityIndicatorView` set these properties according to your usag
     self.spinner.stopAnimating()  // spinner stops animating
     self.spinner.hidesWhenStopped // spinner hides when stopped
 
-    
+## License
+
+MIT Licensed
 
 
 
