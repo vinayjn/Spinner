@@ -116,11 +116,11 @@ class Spinner: UIView {
         
         self.addSubview(label)
         if enableInnerLayer{
-            label.frame.size.width = innerView.frame.size.width/2.0
+            label.frame.size.width = innerView.frame.size.width/1.2
             label.frame.size.height = innerView.frame.size.height
         }
         else{
-            label.frame.size.width = outerView.frame.size.width/2.0
+            label.frame.size.width = outerView.frame.size.width/1.2
             label.frame.size.height = outerView.frame.size.height
         }
         label.numberOfLines = 0
