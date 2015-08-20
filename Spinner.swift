@@ -27,6 +27,7 @@ class Spinner: UIView {
     @IBInspectable var outerStrokeColor : UIColor = UIColor.grayColor()
     @IBInspectable var outerLineWidth : CGFloat = 5.0
     @IBInspectable var outerEndStroke : CGFloat = 0.5
+    @IBInspectable var outerAnimationDuration : CGFloat = 2.0
     
     @IBInspectable var enableInnerLayer : Bool = true
     
@@ -34,6 +35,7 @@ class Spinner: UIView {
     @IBInspectable var innerStrokeColor : UIColor = UIColor.grayColor()
     @IBInspectable var innerLineWidth : CGFloat = 5.0
     @IBInspectable var innerEndStroke : CGFloat = 0.5
+    @IBInspectable var innerAnimationDuration : CGFloat = 1.6
     
     @IBInspectable var labelText : String  = ""
     @IBInspectable var labelFont : String  = "Helvetica"
@@ -116,7 +118,7 @@ class Spinner: UIView {
         
         self.addSubview(label)
         if enableInnerLayer{
-            label.frame.size.width = innerView.frame.size.width/1.2
+            label.frame.size.width = innerView.frame.size.width/1.20
             label.frame.size.height = innerView.frame.size.height
         }
         else{
@@ -136,7 +138,7 @@ class Spinner: UIView {
         var rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
         rotationAnimation.fromValue = 0 * CGFloat(M_PI/180)
         rotationAnimation.toValue = 360 * CGFloat(M_PI/180)
-        rotationAnimation.duration = 1.0
+        rotationAnimation.duration = Double(innerAnimationDuration)
         rotationAnimation.repeatCount = HUGE
         self.innerView.layer.addAnimation(rotationAnimation, forKey: "rotateInner")
     }
@@ -145,7 +147,7 @@ class Spinner: UIView {
         var rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
         rotationAnimation.fromValue = 360 * CGFloat(M_PI/180)
         rotationAnimation.toValue = 0 * CGFloat(M_PI/180)
-        rotationAnimation.duration = 0.8
+        rotationAnimation.duration = Double(outerAnimationDuration)
         rotationAnimation.repeatCount = HUGE
         self.outerView.layer.addAnimation(rotationAnimation, forKey: "rotateOuter")
     }
