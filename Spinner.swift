@@ -23,23 +23,23 @@ class Spinner: UIView {
     
     @IBInspectable var hidesWhenStopped : Bool = false
     
-    @IBInspectable var outerFillColor : UIColor = UIColor.clearColor()
-    @IBInspectable var outerStrokeColor : UIColor = UIColor.grayColor()
+    @IBInspectable var outerFillColor : UIColor = UIColor.clear
+    @IBInspectable var outerStrokeColor : UIColor = UIColor.clear
     @IBInspectable var outerLineWidth : CGFloat = 5.0
     @IBInspectable var outerEndStroke : CGFloat = 0.5
     @IBInspectable var outerAnimationDuration : CGFloat = 2.0
     
     @IBInspectable var enableInnerLayer : Bool = true
     
-    @IBInspectable var innerFillColor : UIColor  = UIColor.clearColor()
-    @IBInspectable var innerStrokeColor : UIColor = UIColor.grayColor()
+    @IBInspectable var innerFillColor : UIColor  = UIColor.clear
+    @IBInspectable var innerStrokeColor : UIColor = UIColor.gray
     @IBInspectable var innerLineWidth : CGFloat = 5.0
     @IBInspectable var innerEndStroke : CGFloat = 0.5
     @IBInspectable var innerAnimationDuration : CGFloat = 1.6
     
     @IBInspectable var labelText : String  = ""
     @IBInspectable var labelFont : String  = "Helvetica"
-    @IBInspectable var labelTextColor : UIColor  = UIColor.blackColor()
+    @IBInspectable var labelTextColor : UIColor  = UIColor.black
     
     @IBInspectable var labelFontSize : CGFloat = 11.0
     
@@ -54,23 +54,23 @@ class Spinner: UIView {
         self.commonInit()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
         self.commonInit()
     }
     
     func commonInit(){
-        self.backgroundColor = UIColor.clearColor()
+        self.backgroundColor = UIColor.clear
     }
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         
         switch Style{
         case .Dark:
-            outerStrokeColor = UIColor.grayColor()
-            innerStrokeColor = UIColor.grayColor()
-            labelTextColor = UIColor.grayColor()
+            outerStrokeColor = UIColor.gray
+            innerStrokeColor = UIColor.gray
+            labelTextColor = UIColor.gray
         case .Light:
             outerStrokeColor = UIColor ( red: 0.9333, green: 0.9333, blue: 0.9333, alpha: 1.0 )
             innerStrokeColor = UIColor ( red: 0.9333, green: 0.9333, blue: 0.9333, alpha: 1.0 )
@@ -80,37 +80,37 @@ class Spinner: UIView {
         }
         
         self.addSubview(outerView)
-        outerView.frame = CGRectMake(0 , 0, rect.size.width, rect.size.height)
-        outerView.center = self.convertPoint(self.center, fromCoordinateSpace: self.superview!)
+        outerView.frame = CGRect(x: 0 , y: 0, width: rect.size.width, height: rect.size.height)
+        outerView.center = self.convert(self.center, from: self.superview!)
         
         let outerLayer = CAShapeLayer()
-        outerLayer.path = UIBezierPath(ovalInRect: outerView.bounds).CGPath
+        outerLayer.path = UIBezierPath(ovalIn: outerView.bounds).cgPath
         outerLayer.lineWidth = outerLineWidth
         outerLayer.strokeStart = 0.0
         outerLayer.strokeEnd = outerEndStroke
         outerLayer.lineCap = kCALineCapRound
-        outerLayer.fillColor = outerFillColor.CGColor
-        outerLayer.strokeColor = outerStrokeColor.CGColor
+        outerLayer.fillColor = outerFillColor.cgColor
+        outerLayer.strokeColor = outerStrokeColor.cgColor
         outerView.layer.addSublayer(outerLayer)
         
         if enableInnerLayer{
             
             self.addSubview(innerView)
-            innerView.frame = CGRectMake(0 , 0, rect.size.width - 20, rect.size.height - 20)
-            innerView.center =  self.convertPoint(self.center, fromCoordinateSpace: self.superview!)
+            innerView.frame = CGRect(x: 0, y: 0, width: rect.size.width - 20, height: rect.size.height - 20)
+            innerView.center =  self.convert(self.center, from: self.superview!)
             let innerLayer = CAShapeLayer()
-            innerLayer.path = UIBezierPath(ovalInRect: innerView.bounds).CGPath
+            innerLayer.path = UIBezierPath(ovalIn: innerView.bounds).cgPath
             innerLayer.lineWidth = innerLineWidth
             innerLayer.strokeStart = 0
             innerLayer.strokeEnd = innerEndStroke
             innerLayer.lineCap = kCALineCapRound
-            innerLayer.fillColor = innerFillColor.CGColor
-            innerLayer.strokeColor = innerStrokeColor.CGColor
+            innerLayer.fillColor = innerFillColor.cgColor
+            innerLayer.strokeColor = innerStrokeColor.cgColor
             
             innerView.layer.addSublayer(innerLayer)
         }
         
-        var label = UILabel()
+        let label = UILabel()
         
         label.text = labelText
         label.textColor = labelTextColor
@@ -120,41 +120,40 @@ class Spinner: UIView {
         if enableInnerLayer{
             label.frame.size.width = innerView.frame.size.width/1.20
             label.frame.size.height = innerView.frame.size.height
-        }
-        else{
+        } else {
             label.frame.size.width = outerView.frame.size.width/1.2
             label.frame.size.height = outerView.frame.size.height
         }
         label.numberOfLines = 0
-        label.lineBreakMode = .ByWordWrapping
-        label.textAlignment = .Center
-        label.center = self.convertPoint(self.center, fromCoordinateSpace: self.superview!)
+        label.lineBreakMode = .byWordWrapping
+        label.textAlignment = .center
+        label.center = self.convert(self.center, from: self.superview!)
         
         self.startAnimating()
     }
     
     func animateInnerRing(){
         
-        var rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
+        let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
         rotationAnimation.fromValue = 0 * CGFloat(M_PI/180)
         rotationAnimation.toValue = 360 * CGFloat(M_PI/180)
         rotationAnimation.duration = Double(innerAnimationDuration)
         rotationAnimation.repeatCount = HUGE
-        self.innerView.layer.addAnimation(rotationAnimation, forKey: "rotateInner")
+        self.innerView.layer.add(rotationAnimation, forKey: "rotateInner")
     }
     func animateOuterRing(){
         
-        var rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
+        let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
         rotationAnimation.fromValue = 360 * CGFloat(M_PI/180)
         rotationAnimation.toValue = 0 * CGFloat(M_PI/180)
         rotationAnimation.duration = Double(outerAnimationDuration)
         rotationAnimation.repeatCount = HUGE
-        self.outerView.layer.addAnimation(rotationAnimation, forKey: "rotateOuter")
+        self.outerView.layer.add(rotationAnimation, forKey: "rotateOuter")
     }
     
     func startAnimating(){
         
-        self.hidden = false
+        self.isHidden = false
         
         self.animateOuterRing()
         self.animateInnerRing()
@@ -162,7 +161,7 @@ class Spinner: UIView {
     
     func stopAnimating(){
         if hidesWhenStopped{
-            self.hidden = true
+            self.isHidden = true
         }
         self.outerView.layer.removeAllAnimations()
         self.innerView.layer.removeAllAnimations()
