@@ -5,7 +5,7 @@ Inspired by : [icanzilb/SwiftSpinner](https://github.com/icanzilb/SwiftSpinner)
 
 ![Preview](https://raw.githubusercontent.com/vinayjn/Spinner/master/preview/Spinner.gif)
 
-###Usage
+### Usage
 
 Download the file [Spinner.swift](https://raw.githubusercontent.com/vinayjn/Spinner/master/Spinner.swift) and Add in your project.
 
